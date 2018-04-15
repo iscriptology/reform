@@ -1,0 +1,66 @@
+/* Second Bar */
+
+.dashboard-header {
+  z-index:10;
+  width:100%;
+  background-color: #ffffff;
+  box-shadow: 1px 3px 3px 0 rgba(0, 0, 0, 0.05);
+  padding: 20px 40px;
+  &.sticky { position: fixed; top: 0; left: 0; }
+}
+
+.dashboard-header h2 {
+  line-height: 20px;
+  margin: 0;
+  float: left;
+}
+
+.dashboard-header h2 a {
+  font-size: 16px;
+  color: #4e5359;
+  text-decoration: none;
+}
+
+.dashboard-header nav {
+  text-align: right;
+  line-height: 20px;
+  font-size: 16px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.dashboard-header nav a {
+  display: inline-block;
+  color: #4e5359;
+  text-decoration: none;
+}
+
+.dashboard-header nav i.fa {
+  color: #A9B7BF;
+  margin: 0 4px 0 15px;
+}
+
+@media all and (max-width: 600px) {
+  .dashboard-header {
+    padding: 20px 0;
+  }
+
+  .dashboard-header h2 {
+    float: none;
+    margin: 0 0 12px;
+  }
+
+  .dashboard-header nav {
+    text-align: center;
+  }
+
+  .dashboard-header nav a {
+    display: block;
+    padding: 8px;
+  }
+
+  .dashboard-header nav i.fa {
+    margin-left: 0;
+  }
+}

@@ -1,0 +1,31 @@
+.data-editor-component {
+  div.editing {
+    * {
+      letter-spacing: 0.07em;
+    }
+    input {
+      font-size: 13px;
+      text-transform: uppercase;
+      font-weight: 700;
+      line-height: 1;
+      padding: 0;
+      border: none;
+      outline: none;
+      background: transparent;
+    }
+  }
+
+  .step-component {
+    .step-buttons { margin-top:0; }
+    .fields-list-component { background: white; margin: 0 10px 0; padding:5px; border: 1px solid rgba(34,36,38,.15); border-top: 0;
+      .field-component {
+        .fields-divider { margin: 5px 0; }
+      }
+    }
+  }
+}
+
+/* this must be global since a field component is draggable */
+.field-component-sortable{
+  .options-component { margin-top: 5px }
+}
