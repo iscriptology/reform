@@ -6,6 +6,6 @@ Work in progress. use
 
 then 
 
-`open https://localhost:8000/forms/1`
+`open http://localhost:8000/forms/1`
 
 to start exploring
