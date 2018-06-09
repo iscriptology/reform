@@ -4,6 +4,8 @@ import * as React from 'react';
 import {Button, Divider, Dropdown, Icon, Input} from 'semantic-ui-react';
 import {SortableElement, SortableHandle} from 'react-sortable-hoc';
 import {fieldTypes, fieldTypesGroups} from './field_types/field_types';
+import {observer, inject} from 'mobx-react';
+import {FieldType} from 'stores/models/FormDefinition';
 
 const DragHandle = SortableHandle(() => <Icon name='move' link style={{cursor: 'move'}} />); // This can be any component you want
 
@@ -15,36 +17,31 @@ const SortableItem = SortableElement(({children}) => {
   );
 });
 
+@inject("rootStore") @observer
 class FieldComponent extends React.Component {
 
   constructor(){
     super();
-    this.state = {
-      optionsComponent: null
-    };
   }
 
-  static fieldTypeChanged(event, data) {
+  fieldTypeChanged(event, data) {
     let temp = data.value.split(':');
     let groupId = parseInt(temp[0]), fieldTypeId = parseInt(temp[1]);
-    let fieldOptionsComponent = fieldTypes[groupId][fieldTypeId].optionsComponent;
-    this.setState({
-      optionsComponent: fieldOptionsComponent
-    });
+    this.props.field.setFieldType(new FieldType(groupId, fieldTypeId));
   }
 
-  static fieldTypesSearch(options, query){
+  fieldTypesSearch(options, query) {
     let filteredOptions = [];
 
     let i = 0;
 
-    while(i < options.length) {
+    while (i < options.length) {
       let opt = options[i];
       if (opt.text.toLowerCase().indexOf(query.toLowerCase()) !== -1) {
         filteredOptions.push(opt);
-        if(opt.disabled){ // means it's a group
+        if (opt.disabled) { // means it's a group
           opt = options[++i];
-          while(i < options.length && !opt.disabled){
+          while (i < options.length && !opt.disabled) {
             filteredOptions.push(opt);
             opt = options[++i];
           }
@@ -57,7 +54,19 @@ class FieldComponent extends React.Component {
     return filteredOptions;
   }
 
+  positionClicked(){
+    //this.updateLinePosition();
+    this.props.rootStore.currFormDefinition.setCurrField(this.props.field);
+  }
+
+  fieldNameChanged(event, input){
+    this.props.field.changeName(input.value);
+  }
+
   render() {
+    let fieldOptionsComponent = null;
+    if(!!this.props.field.fieldType)
+      fieldOptionsComponent = fieldTypes[this.props.field.fieldType.groupId][this.props.field.fieldType.typeId].optionsComponent;
     let fieldTypeOptions = [];
     fieldTypesGroups.forEach((groupName, groupId) => {
       fieldTypeOptions.push({
@@ -83,17 +92,25 @@ class FieldComponent extends React.Component {
       <div className='field-component'>
         <SortableItem index={this.props.index}>
           <div className='field-component-sortable'>
-            <div>
-              <Button size='mini' color='red' icon='minus' circular />
-              <Input size='mini' iconPosition='left' placeholder='field name' action>
-                <DragHandle />
-                <input />
-                <Dropdown size='mini' placeholder='field type' selection search={FieldComponent.fieldTypesSearch.bind(this)}
-                          options={fieldTypeOptions} onChange={FieldComponent.fieldTypeChanged.bind(this)} />
-              </Input>
+            <div className='field-main'>
+              <div className='input-holder'>
+                <Button size='mini' icon='trash' />
+                <Input size='mini' iconPosition='left' value={this.props.field.name} onChange={this.fieldNameChanged.bind(this)} placeholder='field name' action>
+                  <DragHandle />
+                  <input />
+                  <Dropdown placeholder='field type' selection search={this.fieldTypesSearch.bind(this)}
+                            options={fieldTypeOptions} onChange={this.fieldTypeChanged.bind(this)} />
+                </Input>
+              </div>
+              <div className='position-draggable' onClick={this.positionClicked.bind(this)}>
+                <div className='position-handle'/>
+                <div className='position-indication'>position</div>
+              </div>
             </div>
-            <div className='options-component'>
-              {this.state.optionsComponent}
+            <div className='field-options'>
+              <div className='options-component'>
+                {fieldOptionsComponent}
+              </div>
             </div>
           </div>
         </SortableItem>

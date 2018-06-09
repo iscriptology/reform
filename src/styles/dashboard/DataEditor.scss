@@ -25,7 +25,56 @@
   }
 }
 
+.position-toolbar {
+  position: absolute;
+  width: 600px;
+  height: 30px;
+  box-shadow:0px 0px 15px 3px white;
+  left: 100%;
+  margin-left: 34px;
+  background: #bc40df;
+  color: white;
+  z-index:100;
+}
+
 /* this must be global since a field component is draggable */
 .field-component-sortable{
-  .options-component { margin-top: 5px }
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  .field-main {
+    align-items: center;
+    justify-content: flex-start;
+    display: flex;
+    flex-direction: row;
+  }
+  .input-holder {  }
+}
+
+.position-draggable {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-self: flex-end;
+  height: 20px;
+  float: none;
+  cursor: pointer;
+  margin-left: 10px;
+  .position-indication { height: 8px; line-height: 8px; font-size:8px; color: #bc40df; }
+  .position-handle {
+    width: 12px;
+    height: 12px;
+    background: #bc40df;
+    border-radius: 10px;
+    border: 1px solid white;
+    display: inline-block;
+    float: none;
+    margin:0 auto;
+  }
+
+  &:hover, &.connected {
+    .position-handle{
+      box-shadow: #2B5773 0px 0px 5px;
+    }
+  }
 }

@@ -20,31 +20,13 @@ class PDFViewerComponent extends React.Component<Props, State> {
       numPages: 0
     };
     setOptions({
-      workerSrc: 'files/pdf.worker.js'
+      workerSrc: '/files/pdf.worker.js'
     });
   }
 
   onPageRenderSuccess(page) {
     let pageCanvas = document.querySelectorAll('div[data-page-number="'+ page + '"] > canvas')[0];
     pageCanvas.id = 'page-' + page;
-
-// eslint-disable-next-line no-undef
-    let magnifier = JyMagnifier({
-      targetCanvasId: 'page-' + page,
-      ratio: 1.5,
-      width: 300,
-      height: 300,
-      sightSize: 0
-    });
-    magnifier.show(false);
-    pageCanvas.addEventListener('mousemove', doMouseMove, false);
-    //window.addEventListener('scroll', doMouseMove, false);
-    pageCanvas.addEventListener('mouseenter', () => magnifier.show(true), false);
-    pageCanvas.addEventListener('mouseleave', () => magnifier.show(false), false);
-    function doMouseMove(event) {
-      magnifier.show(true);
-      magnifier.bind(event);
-    }
   }
 
   onDocumentLoad(doc: any) {
